@@ -3,7 +3,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-# This funciton returns the 60000 images as 1D numpy arrays (784 bytes)
+# This funciton returns the 60000 images as a 2D numpy array (60000 X 784 bytes)
 # Each value can be viewed using matplotlib.pyplot - must be reshaped as (28, 28)
 def get_training_data():
     with open('data/train-images-idx3-ubyte', 'rb') as file:
@@ -27,11 +27,10 @@ def get_training_data():
         # Read the data
         image_data = file.read(60000 * 28 * 28)
 
-        images = []
+        images = np.empty((60000, 28 * 28), dtype=np.uint8)
 
         for i in range(60000):
-            image_data_arr = np.frombuffer(image_data, dtype=np.uint8, count=(28 * 28), offset=(i * 28 * 28))
-            images.append(image_data_arr)
+            images[i] = np.frombuffer(image_data, dtype=np.uint8, count=(28 * 28), offset=(i * 28 * 28))
 
         return images
 
@@ -75,11 +74,10 @@ def get_test_data():
         # Read the data
         image_data = file.read(10000 * 28 * 28)
 
-        images = []
+        images = np.empty((10000, 28 * 28), dtype=np.uint8)
 
         for i in range(10000):
-            image_data_arr = np.frombuffer(image_data, dtype=np.uint8, count=(28 * 28), offset=(i * 28 * 28))
-            images.append(image_data_arr)
+            images[i] = np.frombuffer(image_data, dtype=np.uint8, count=(28 * 28), offset=(i * 28 * 28))
 
         return images
 
