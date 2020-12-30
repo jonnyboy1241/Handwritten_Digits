@@ -3,8 +3,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from view_image import *
-
 # This funciton returns the 60000 images as 1D numpy arrays (784 bytes)
 # Each value can be viewed using matplotlib.pyplot - must be reshaped as (28, 28)
 def get_training_data():
@@ -22,7 +20,7 @@ def get_training_data():
         assert num_rows == 28
         assert num_cols == 28
 
-        # The training set image file consists of 600000 images
+        # The training set image file consists of 60000 images
         # Each image is 28 x 28 pixels. Each pixel takes a greyscale
         # value in the range 0-255 inclusive.
 
@@ -36,3 +34,71 @@ def get_training_data():
             images.append(image_data_arr)
 
         return images
+
+
+# Returns the 60000 labels for the training data
+def get_training_labels():
+    with open('data/train-labels.idx1-ubyte', 'rb') as file:
+        magic_num = int.from_bytes(file.read(4), 'big')
+
+        # Ensure the magic number matches
+        assert magic_num == 0x801
+
+        num_labels = int.from_bytes(file.read(4), 'big')
+
+        assert num_labels == 60000
+
+        # Ths file includes 60000 unsigned bytes (np.uint8)
+        # as labels for the training data
+        raw_label_data = file.read(60000)
+        label_data = np.frombuffer(raw_label_data, dtype=np.uint8, count=60000, offset=0)
+
+        return label_data
+
+
+# Returns the 10000 images in the test set in the same format
+def get_test_data():
+    with open('data/t10k-images-idx3-ubyte', 'rb') as file:
+        magic_num = int.from_bytes(file.read(4), 'big')
+        
+        # Ensure the magic number matches
+        assert magic_num == 0x803
+
+        num_images = int.from_bytes(file.read(4), 'big')
+        num_rows = int.from_bytes(file.read(4), 'big')
+        num_cols = int.from_bytes(file.read(4), 'big')
+
+        assert num_images == 10000
+        assert num_rows == 28
+        assert num_cols == 28
+
+        # Read the data
+        image_data = file.read(10000 * 28 * 28)
+
+        images = []
+
+        for i in range(10000):
+            image_data_arr = np.frombuffer(image_data, dtype=np.uint8, count=(28 * 28), offset=(i * 28 * 28))
+            images.append(image_data_arr)
+
+        return images
+
+
+# Returns the 10000 labels for the test data
+def get_test_labels():
+    with open('data/t10k-labels-idx1-ubyte', 'rb') as file:
+        magic_num = int.from_bytes(file.read(4), 'big')
+
+        # Ensure the magic number matches
+        assert magic_num == 0x801
+
+        num_labels = int.from_bytes(file.read(4), 'big')
+
+        assert num_labels == 10000
+
+        # Ths file includes 10000 unsigned bytes (np.uint8)
+        # as labels for the test data
+        raw_label_data = file.read(10000)
+        label_data = np.frombuffer(raw_label_data, dtype=np.uint8, count=10000, offset=0)
+
+        return label_data
