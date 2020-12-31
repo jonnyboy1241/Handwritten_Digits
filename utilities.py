@@ -2,6 +2,7 @@
 
 import matplotlib.pyplot as plt
 import numpy as np
+import time
 
 # This funciton displays an MNIST handwritten digit as a 28x28 pixel image
 def view_image(image):
@@ -24,3 +25,9 @@ def compute_accuracy(classifications, labels):
     print('Classification Accuracy = %6.4f' % (classification_accuracy))
 
     return classification_accuracy
+
+
+def compute_time(begin_time):
+    time_passed = time.time() - begin_time
+    print('Time = %6.4f s' % (time_passed))
+    return time_passed
