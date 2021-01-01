@@ -112,7 +112,7 @@ void k_nearest_neighbors(unsigned int k, double minkowski_num)
     }
 
     compute_time(time_began);
-    compute_accuracy(classifications);
+    classification_accuracy(classifications);
 
     free(classifications);
     classifications = NULL;
