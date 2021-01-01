@@ -13,7 +13,7 @@ def view_image(image):
     plt.show()
 
 
-# Get a subset of the training set to try to spped up kNN
+# Get a subset of the training set
 # Get n images from each class (0 - 9)
 def reduce_training_set(n, training_images, training_labels):
     assert 0 <= n and n <= 5000
@@ -24,9 +24,9 @@ def reduce_training_set(n, training_images, training_labels):
 
     # While not the most efficient method for doing this, resulting datasets will be very random
     while selected_images < (n * 10):
-        location = random.randint(0, training_labels.size() - 1)
+        location = random.randint(0, training_labels.size - 1)
 
-        label = training_images[location]
+        label = training_labels[location]
 
         if label_distribution[label] >= n:
             continue
@@ -35,8 +35,8 @@ def reduce_training_set(n, training_images, training_labels):
         selected_images += 1
 
 
-    images = np.empty((n, 28 * 28), dtype=np.uint8)
-    labels = np.empty((n,), dtype=np.uint8)
+    images = np.empty((n * 10, 28 * 28), dtype=np.uint8)
+    labels = np.empty((n * 10,), dtype=np.uint8)
 
     for i in range(len(indices_of_selected_images)):
         images[i] = training_images[indices_of_selected_images[i]]
