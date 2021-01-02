@@ -13,6 +13,14 @@ def view_image(image):
     plt.show()
 
 
+# This function displays an MNIST handwritten digit as a reduced 14x14 pixel image
+def view_reduced_image(image):
+    image = image.reshape(14, 14)
+    plt.gray()
+    plt.imshow(image)
+    plt.show()
+
+
 # Get a subset of the training set
 # Get n images from each class (0 - 9)
 def reduce_training_set(n, training_images, training_labels):

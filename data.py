@@ -100,3 +100,51 @@ def get_test_labels():
         label_data = np.frombuffer(raw_label_data, dtype=np.uint8, count=10000, offset=0)
 
         return label_data
+
+
+# Transforms the data into a 14x14 pixel image
+# Not good for classification
+def get_reduced_training_data():
+    original_training_data = get_training_data()
+
+    transformed_training_data = np.empty((60000, 14 * 14), dtype=np.uint8)
+
+    for i in range(60000):
+        image = original_training_data[i].reshape(28, 28)
+
+        new_image = np.empty((196,), dtype=np.int8)
+
+        curr_pixel_num = 0
+
+        for row in range(0, 28, 2):
+            for col in range(0, 28, 2):
+                # TODO - Use a better algorithm to reduce the image
+                new_image[curr_pixel_num] = np.uint8((np.uint16(image[row][col]) + np.uint16(image[row + 1][col]) + np.uint16(image[row][col + 1]) + np.uint16(image[row + 1][col + 1]))) // 4
+                curr_pixel_num += 1
+        
+        transformed_training_data[i] = new_image
+    
+    return transformed_training_data
+
+
+def get_reduced_test_data():
+    original_test_data = get_test_data()
+
+    transformed_test_data = np.empty((10000, 14 * 14), dtype=np.uint8)
+
+    for i in range(10000):
+        image = original_test_data[i].reshape(28, 28)
+
+        new_image = np.empty((196,), dtype=np.int8)
+
+        curr_pixel_num = 0
+
+        for row in range(0, 28, 2):
+            for col in range(0, 28, 2):
+                # TODO - Use a better algorithm to reduce the image
+                new_image[curr_pixel_num] = np.uint8((np.uint16(image[row][col]) + np.uint16(image[row + 1][col]) + np.uint16(image[row][col + 1]) + np.uint16(image[row + 1][col + 1]))) // 4
+                curr_pixel_num += 1
+
+        transformed_test_data[i] = new_image
+
+    return transformed_test_data
