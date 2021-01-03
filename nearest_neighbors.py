@@ -15,6 +15,9 @@ def k_nearest_neighbors(training_data, training_labels, test_data, test_labels, 
     for i in range(test_labels.size):
         classification_labels[i] = classify(test_data[i], training_data, training_labels, k, minkowski_num)
 
+        if i % 1000 == 0:
+            print('%d Images Classified' % i)
+
     return classification_labels
     
 
